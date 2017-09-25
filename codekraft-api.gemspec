@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Codekraft::Api::VERSION
   s.authors     = ["Arnaud DRAZEK"]
   s.email       = ["adrazek@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Codekraft::Api."
-  s.description = "TODO: Description of Codekraft::Api."
+  s.homepage    = "https://github.com/TheRealCodeKraft/codekraft-ruby-api"
+  s.summary     = "The Code Base of Codekraft APIs"
+  s.description = "Description of Codekraft::Api."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
