@@ -4,7 +4,7 @@ module Codekraft
       class User < Base
 
         def initialize
-          base(User)
+          super(User)
         end
 
       end
