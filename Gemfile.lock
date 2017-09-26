@@ -2,7 +2,24 @@ PATH
   remote: .
   specs:
     codekraft-api (0.1.0)
+      aws-sdk
+      bcrypt (~> 3.1.7)
+      doorkeeper
+      dotenv
+      dotenv-rails
+      grape
+      grape-active_model_serializers
+      grape-swagger
+      grape-swagger-rails
+      grape-swagger-representable
+      hashie-forbidden_attributes
+      paperclip
+      rack-cors
       rails (~> 5.0.5)
+      redis
+      resque
+      resque-scheduler
+      rubyzip
 
 GEM
   remote: https://rubygems.org/
