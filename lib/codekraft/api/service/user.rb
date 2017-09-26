@@ -4,10 +4,16 @@ module Codekraft
       class User < Base
 
         def create params
-          params[:salt] = ::BCrypt::Engine.generate_salt
-          params[:encrypted_password] = encrypt_password(params[:password], params[:salt])
-          params.delete :password
-          params.delete :password_confirm
+          if params[:password]
+            params[:salt] = ::BCrypt::Engine.generate_salt
+            params[:encrypted_password] = encrypt_password(params[:password], params[:salt])
+            params[:no_password] = false
+
+            params.delete :password
+            params.delete :password_confirm
+          else
+            params[:no_password] = true
+          end
           params[:email] = params[:email].downcase
           super(params)
         end
