@@ -4,5 +4,7 @@ module Codekraft
    require 'codekraft/api/defaults'
    require 'codekraft/api/endpoint'
    require 'codekraft/api/service'
+
+   require 'codekraft/api/service/user'
   end
 end
