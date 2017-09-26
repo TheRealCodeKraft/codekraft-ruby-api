@@ -1,5 +1,5 @@
 module Codekraft
-  module V1
+  module Api
     module Defaults
 
       extend ActiveSupport::Concern
