@@ -6,12 +6,12 @@ module Codekraft
         @model = model
       end
 
-      def fetchAll
+      def fetchAll params
          @model.all
       end
 
-      def fetchOne id
-        @model.find(id)
+      def fetchOne params
+        @model.find(params[:id])
       end
 
       def create params
@@ -22,8 +22,8 @@ module Codekraft
         @model.update!(params)
       end
 
-      def delete id
-        @model.destroy(id)
+      def delete params
+        @model.destroy(params[:id])
       end
 
     end
