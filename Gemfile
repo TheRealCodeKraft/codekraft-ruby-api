@@ -12,3 +12,27 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+
+gem 'bcrypt', '~> 3.1.7'
+gem 'rubyzip'
+gem 'dotenv'
+gem 'dotenv-rails'
+
+gem 'grape'
+gem 'grape-active_model_serializers'
+gem 'hashie-forbidden_attributes'
+gem 'grape-swagger'
+gem 'grape-swagger-rails'
+gem 'grape-swagger-representable'
+
+gem 'paperclip'
+gem 'aws-sdk'
+
+gem 'resque'
+gem 'resque-scheduler'
+
+gem 'redis'
+
+gem 'rack-cors', :require => 'rack/cors'
+gem 'doorkeeper'
+
