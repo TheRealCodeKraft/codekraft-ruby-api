@@ -40,5 +40,5 @@ Gem::Specification.new do |s|
   s.add_dependency "rack-cors"
   s.add_dependency "doorkeeper"
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "pg"
 end
