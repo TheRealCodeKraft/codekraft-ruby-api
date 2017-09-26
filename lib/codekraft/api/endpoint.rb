@@ -41,25 +41,7 @@ module Codekraft
         }
       }
 
-      resources = {
-        user: {
-          service: Codekraft::Api::Service::User.new(::User),
-          endpoints: {
-            create: {
-              auth: nil
-            },
-            me: {
-              method: "get",
-              route: "/me",
-              service: {
-                function: "fetchOne",
-                params: {id: "current_user.id"},
-                auth: [:doorkeeper_authorize!]
-              }
-            }
-          }
-        }
-      }
+      resources = Codekraft::Api.configuration.resources
 
       resources.each do |key, res|
 
