@@ -7,84 +7,109 @@ module Codekraft
       include Codekraft::Api::Defaults
 
       helpers Doorkeeper::Grape::Helpers
+ 
+      base_endpoints = {
+        fetchAll: {
+          method: "get",
+          route: "",
+          service: "fetchAll",
+          auth: [:doorkeeper_authorize!, :authorize_admin!]
+        },
+        fetchOne: {
+          method: "get",
+         route: "/:id",
+          service: "fetchOne",
+          auth: [:doorkeeper_authorize!]
+        },
+        create: {
+          method: "post",
+          route: "",
+          service: "create",
+          auth: [:doorkeeper_authorize!]
+        },
+        update: {
+          method: "put",
+          route: "/:id",
+          service: "update",
+          auth: [:doorkeeper_authorize!]
+        },
+        delete: {
+          method: "delete",
+          route: "/:id",
+          service: "destroy",
+          auth: [:doorkeeper_authorize!]
+        }
+      }
 
-      before do
-      end
+      resources = {
+        user: {
+          service: Codekraft::Api::Service::User.new(::User),
+          endpoints: {
+            create: {
+              auth: nil
+            },
+            me: {
+              method: "get",
+              route: "/me",
+              service: {
+                function: "fetchOne",
+                params: {id: "current_user.id"},
+                auth: [:doorkeeper_authorize!]
+              }
+            }
+          }
+        }
+      }
 
-      resource :users do
+      resources.each do |key, res|
 
-        # Users list
-        desc "Get users list"
-        params do
-        end
-        get "", root: :users do
-          User.all
-        end
-
-        desc "Signup user"
-        params do
-          requires :firstname, :lastname, :email, :password, :password_confirm, :cgu
-          optional :pseudo
-        end
-        post "", root: :users do
-          service.signup params
-        end
-
-        desc "Current user"
-        get "/me", root: :users do
-          doorkeeper_authorize!
-          current_user 
-        end
-
-        desc "Update an user password"
-        params do
-          requires :password, :password_confirm
-        end
-        put "/password/:id", root: :users do
-          doorkeeper_authorize!
-          if !is_admin?
-            if current_user.id.to_s != params[:id]
-              error!({error: true, message: "Unauthorized to update the password of another user of yourself", status: 401}, 401)
+        res[:name] = key.to_s
+        res[:plural] = res[:name]+"s" unless (res.has_key? :plural and not res[:plural].nil?)
+        res[:model] = res[:name].camelize.constantize unless (res.has_key? :model and not res[:model].nil?)
+        res[:service] = Codekraft::Api::Service::Base.new(res[:model]) unless (res.has_key? :service and not res[:service].nil?)
+        if res.has_key? :endpoints and not res[:endpoints].nil?
+          base_endpoints.each do |beKey, be|
+            if res[:endpoints].has_key? beKey
+              res[:endpoints][beKey] = be.merge res[:endpoints][beKey]
+            else
+              res[:endpoints][beKey] = be
             end
           end
-          service.updatePassword params
+        else
+          res[:endpoints] = base_endpoints
         end
 
-        desc "Update an user"
-        params do
-          optional :firstname, :lastname, :email, :pseudo, :traineeship, :contract, :school_id
-          optional :traineeship_start_ts, :traineeship_end_ts
-          optional :specialities, type: Array
-          optional :areas, type: Array
-        end
-        put "/:id", root: :users do
-          doorkeeper_authorize!
-          if !is_admin?
-            if current_user.id.to_s != params[:id]
-              error!({error: true, message: "Unauthorized to update another user of yourself", status: 401}, 401)
+        resource res[:plural] do
+          res[:endpoints].each do |key, endpoint|
+            puts "> #{endpoint[:method].upcase} #{res[:name]} (#{endpoint[:route]})"
+            desc endpoint[:method].upcase + " " + res[:name]
+            params do
+            end
+            self.send(endpoint[:method], *{route: endpoint[:route], root: res[:plural]}) do
+              if (endpoint[:auth])
+                endpoint[:auth].each do |auth|
+                  send(auth)
+                end
+              end
+
+              callService = endpoint[:service]
+              if not callService.is_a?(String)
+                callService = callService[:function]
+                if endpoint[:service].has_key? :params
+                  ext_params = {}
+                  endpoint[:service][:params].each do |key, param|
+                    ext_params[key] = self.instance_eval(param)
+                  end
+                  params.merge!(ext_params)
+                end
+              end
+              res[:service].send(callService, params)
             end
           end
-          service.update params
         end
-
-        # Delete User
-        desc "Delete a user"
-        delete "/:id", root: :users do
-          authorize_admin!
-          service.delete params[:id]
-          {id: params[:id], success: true}
-        end
-
-        # Users list
-        #desc "Get users list"
-        #params do
-        #end
-        #get "users/:query", root: :users do
-        #  filters = { 'criteria[0][key]' => 'firstname', 'criteria[0][value]' => params[:query] }
-        #  Moodle::Api.core_user_get_users(filters)
-        #end
-
       end
+
+      add_swagger_documentation api_version: "v1"
 
     end
   end
