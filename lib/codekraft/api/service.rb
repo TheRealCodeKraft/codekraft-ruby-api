@@ -3,27 +3,27 @@ module Codekraft
     class Service
 
       def initialize(model)
-        self.model = model
+        @model = model
       end
 
       def fetchAll
-         self.model.all
+         @model.all
       end
 
       def fetchOne id
-        self.model.find(id)
+        @model.find(id)
       end
 
       def create params
-        self.model.create!(params)
+        @model.create!(params)
       end
 
       def update params
-        self.model.update!(params)
+        @model.update!(params)
       end
 
       def delete id
-        self.model.destroy(id)
+        @model.destroy(id)
       end
 
     end
