@@ -3,10 +3,6 @@ module Codekraft
     module Service
       class User < Base
 
-        def initialize
-          super(User)
-        end
-
       end
     end
   end
