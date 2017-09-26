@@ -37,7 +37,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "redis"
 
-  s.add_dependency "rack-cors", :require => "rack/cors"
+  s.add_dependency "rack-cors"
   s.add_dependency "doorkeeper"
 
   s.add_development_dependency "sqlite3"
