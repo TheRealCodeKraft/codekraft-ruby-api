@@ -1,6 +1,7 @@
 module Codekraft
   module Api
-    # Your code goes here...
+   require 'codekraft/api/version'
+   require 'codekraft/api/defaults'
    require 'codekraft/api/endpoint'
   end
 end
