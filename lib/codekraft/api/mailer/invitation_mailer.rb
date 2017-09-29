@@ -1,7 +1,7 @@
 module Codekraft
   module Api
     module Mailer
-      class InvitationMailer < ApplicationMailer
+      class InvitationMailer < Base
         def invite user
           stamp = SecureRandom.uuid
           user.stamp_salt = BCrypt::Engine.generate_salt
