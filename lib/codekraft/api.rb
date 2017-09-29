@@ -11,6 +11,8 @@ module Codekraft
    require 'codekraft/api/service'
    require 'codekraft/api/serializer'
 
+   require 'codekraft/api/mailer'
+
    require 'codekraft/api/utils'
 
    require 'codekraft/api/service/user'
