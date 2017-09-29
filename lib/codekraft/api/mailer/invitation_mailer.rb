@@ -5,7 +5,7 @@ module Codekraft
         def invite user
           stamp = SecureRandom.uuid
           user.stamp_salt = BCrypt::Engine.generate_salt
-          user.stamp = ::UserService.new.encrypt_password(stamp, user.stamp_salt)
+          user.stamp = Codekraft::Api::Service::User.new.encrypt_password(stamp, user.stamp_salt)
           user.stamp_expiration = 2.days.from_now
           user.save!
 

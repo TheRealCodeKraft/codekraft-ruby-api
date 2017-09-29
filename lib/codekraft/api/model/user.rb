@@ -11,8 +11,8 @@ module Codekraft
         validates :email, uniqueness: true
         validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
 
-        validates :salt, presence: true
-        validates :encrypted_password, presence: true
+        validates :salt, presence: true, if: '!no_password'
+        validates :encrypted_password, presence: true, if: '!no_password'
 
         def is_admin?
           role == "admin"
