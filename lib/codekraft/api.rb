@@ -6,7 +6,12 @@ module Codekraft
 
    require 'codekraft/api/defaults'
    require 'codekraft/api/endpoint'
+
+   require 'codekraft/api/model'
    require 'codekraft/api/service'
+   require 'codekraft/api/serializer'
+
+   require 'codekraft/api/utils'
 
    require 'codekraft/api/service/user'
   end

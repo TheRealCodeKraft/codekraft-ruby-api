@@ -3,6 +3,10 @@ module Codekraft
     module Service
       class User < Base
 
+        def initialize
+          super(Codekraft::Api::Model::User)
+        end
+
         def create params
           if params[:password]
             params[:salt] = ::BCrypt::Engine.generate_salt
@@ -13,6 +17,7 @@ module Codekraft
             params.delete :password_confirm
           else
             params[:no_password] = true
+            Codekraft::Api::Mailer::InvitationMailer.invite(user).deliver
           end
           params[:email] = params[:email].downcase
           super(params)

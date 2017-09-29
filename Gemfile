@@ -36,3 +36,4 @@ gem 'redis'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'doorkeeper'
 
+gem 'colorize'

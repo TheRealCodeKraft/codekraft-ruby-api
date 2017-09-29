@@ -6,6 +6,10 @@ module Codekraft
           @model = model
         end
 
+        def model
+          @model
+        end
+
         def fetchAll params
            @model.all
         end
