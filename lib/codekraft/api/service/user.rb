@@ -17,10 +17,12 @@ module Codekraft
             params.delete :password_confirm
           else
             params[:no_password] = true
-            Codekraft::Api::Mailer::InvitationMailer.invite(user).deliver
           end
           params[:email] = params[:email].downcase
-          super(params)
+          user = super(params)
+          if user.no_password
+            Codekraft::Api::Mailer::InvitationMailer.invite(user).deliver
+          end
         end
 
         def update params
