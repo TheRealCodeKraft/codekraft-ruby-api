@@ -1,8 +1,8 @@
 module Codekraft
   module Api
     module Mailer
-      class InvitationMailer < Base
-        def invite user
+      class ForgotPasswordMailer < Base
+        def reset_password user
           stamp = SecureRandom.uuid
           user.stamp_salt = BCrypt::Engine.generate_salt
           user.stamp = Codekraft::Api::Service::User.new.encrypt_password(stamp, user.stamp_salt)
@@ -10,9 +10,9 @@ module Codekraft
           user.save!
 
           @user = user
-          @url = base_url + "/?email=#{user.email}&stamp=#{stamp}"
+          @url = base_url + "/reset-password?email=#{user.email}&key=#{stamp}"
 
-          mail(to: user.email, from:Codekraft::Api.configuration.default_mail_from, subject: "Rendez-vous sur notre site")
+          mail(to: user.email, from:Codekraft::Api.configuration.default_mail_from, subject: "Changer votre mot de passe")
 
         end
       end

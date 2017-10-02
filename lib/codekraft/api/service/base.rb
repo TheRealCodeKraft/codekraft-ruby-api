@@ -23,7 +23,9 @@ module Codekraft
         end
 
         def update params
-          @model.update!(params)
+          entity = @model.find(params[:id])
+          params.delete :id
+          entity.update!(params)
         end
 
         def delete params

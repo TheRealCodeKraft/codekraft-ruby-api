@@ -54,6 +54,23 @@ module Codekraft
                   params: {id: "current_user.id"},
                   auth: [:doorkeeper_authorize!]
                 }
+              },
+              forgot_password: {
+                method: "get",
+                route: "/forgot-password",
+                service: {
+                  function: "forgotPassword"
+                }
+              },
+              check_stamp: {
+                method: "get",
+                route: "/check-stamp",
+                service: "checkStamp"
+              },
+              update_password: {
+                method: "put",
+                route: "/update-password/:id",
+                service: "updatePassword"
               }
             },
             serializer: {
