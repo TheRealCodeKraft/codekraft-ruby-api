@@ -48,7 +48,7 @@ module Codekraft
           user = Codekraft::Api::Model::User.find_by({email: params[:email]})
           result = {found: (not user.nil?), 
                     stamp_ok: Codekraft::Api::Service::User.new.encrypt_password(params[:stamp], user.stamp_salt) == user.stamp,
-                    stamp_expiration_ok: user.stamp_expiration < 1.second.from_now}
+                    stamp_expiration_ok: user.stamp_expiration > 1.second.from_now}
            if result[:stamp_ok] and result[:stamp_expiration_ok]
              result[:user_id] = user.id
            end
