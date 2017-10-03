@@ -76,6 +76,11 @@ module Codekraft
             serializer: {
               attributes: [:firstname, :lastname, :email, :role, :no_password]
             }
+          },
+          page: {
+            serializer: {
+              attributes: [:title, :body]
+            }
           }
         }.merge!(@resources ||= {})
       end
