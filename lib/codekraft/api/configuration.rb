@@ -78,6 +78,7 @@ module Codekraft
             }
           },
           page: {
+            model: Codekraft::Api::Model::Page,
             serializer: {
               attributes: [:title, :body]
             }

@@ -1,7 +1,7 @@
 module Codekraft
   module Api
     module Model
-      class Page < Post
+      class Page < Codekraft::Api::Model::Post
         content_attr :body, :text
 
         validates :body, presence: true
