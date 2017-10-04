@@ -5,6 +5,9 @@ module Codekraft
       require 'codekraft/api/service/base'
       require 'codekraft/api/service/user'
 
+      require 'codekraft/api/service/post'
+      require 'codekraft/api/service/page'
+
     end
   end
 end

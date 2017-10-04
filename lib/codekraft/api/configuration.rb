@@ -74,13 +74,13 @@ module Codekraft
               }
             },
             serializer: {
-              attributes: [:firstname, :lastname, :email, :role, :no_password]
+              attributes: [:id, :firstname, :lastname, :email, :role, :no_password]
             }
           },
           page: {
-            model: Codekraft::Api::Model::Page,
+            service: Codekraft::Api::Service::Page.new,
             serializer: {
-              attributes: [:title, :body]
+              attributes: [:id, :slug, :title, :body, :group]
             }
           }
         }.merge!(@resources ||= {})

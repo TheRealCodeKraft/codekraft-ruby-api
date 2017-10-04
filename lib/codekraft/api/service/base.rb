@@ -28,7 +28,7 @@ module Codekraft
           entity.update!(params)
         end
 
-        def delete params
+        def destroy params
           @model.destroy(params[:id])
         end
       end
