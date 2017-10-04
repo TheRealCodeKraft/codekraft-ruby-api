@@ -79,6 +79,11 @@ module Codekraft
           },
           page: {
             service: Codekraft::Api::Service::Page.new,
+            endpoints: {
+              fetchAll: {
+                auth: nil
+              },
+            },
             serializer: {
               attributes: [:id, :slug, :title, :body, :group]
             }
