@@ -25,8 +25,8 @@ gem 'grape-swagger'
 gem 'grape-swagger-rails'
 gem 'grape-swagger-representable'
 
-gem 'paperclip'
-gem 'aws-sdk'
+#gem 'paperclip'
+#gem 'aws-sdk'
 
 gem 'resque'
 gem 'resque-scheduler'

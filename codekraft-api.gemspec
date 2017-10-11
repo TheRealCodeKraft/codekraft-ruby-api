@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_dependency "grape-swagger-representable"
 
   s.add_dependency "paperclip"
-  s.add_dependency "aws-sdk"
+  #s.add_dependency "aws-sdk"
 
   s.add_dependency "resque"
   s.add_dependency "resque-scheduler"
