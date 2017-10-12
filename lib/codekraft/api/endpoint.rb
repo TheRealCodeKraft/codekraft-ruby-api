@@ -66,8 +66,14 @@ puts "DOES NOT EXISTS"
               res[:service] = Codekraft::Api::Service::Base.new(Codekraft::Api::Model::Base)
             end
 
-            if not ActiveRecord::Base.connection.table_exists? res[:plural]
-              Codekraft::Api::Utils::Logger.log "MiSSING |>".light_red + " Table " + "#{res[:plural]}".light_green + " <| " + "You may create the table with db migration".light_yellow
+            begin
+              ActiveRecord::Base.establish_connection # Establishes connection
+              ActiveRecord::Base.connection # Calls connection object
+
+              if not ActiveRecord::Base.connection.table_exists? res[:plural]
+                Codekraft::Api::Utils::Logger.log "MiSSING |>".light_red + " Table " + "#{res[:plural]}".light_green + " <| " + "You may create the table with db migration".light_yellow
+              end
+            rescue
             end
 
             if res.has_key? :endpoints and not res[:endpoints].nil?
