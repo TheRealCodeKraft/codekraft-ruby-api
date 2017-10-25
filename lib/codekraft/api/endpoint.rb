@@ -10,17 +10,6 @@ module Codekraft
 
       included do
 
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-puts "AHAHAHAHAHAHAHAHAH"
-
         if not Codekraft::Api.configuration.nil? and not Codekraft::Api.configuration.resources.nil?
 
           Codekraft::Api::Utils::Logger.log "Mouting API Endpoints".yellow
@@ -128,7 +117,12 @@ puts "AHAHAHAHAHAHAHAHAH"
 
                   serializerKlassName = "#{res[:name].camelize}Serializer"
                   if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
-                    serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : {}
+                    serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : []
+                    if serializer_attributes.size == 0
+                      res[:model].new.attributes.each do |attr_name, attr_value|
+                        serializer_attributes.push attr_name
+                      end
+                    end
                     serializerKlass = Class.new(Codekraft::Api::Serializer::Base) do
                       attributes *serializer_attributes
                     end
