@@ -31,6 +31,14 @@ module Codekraft
         def destroy params
           @model.destroy(params[:id])
         end
+
+        def upload params
+          entity = @model.find(params[:id])
+          params[params[:fieldname]] = ActionDispatch::Http::UploadedFile.new(params[params[:fieldname]])
+          params.delete :fieldname
+          entity.update!(params)
+          entity
+        end
       end
     end
   end

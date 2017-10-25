@@ -34,6 +34,12 @@ module Codekraft
             route: "/:id",
             service: "destroy",
             auth: [:doorkeeper_authorize!]
+          },
+          upload: {
+            method: "put",
+            route: "/:id/:fieldname",
+            service: "upload",
+            auth: [:doorkeeper_authorize!]
           }
         }.merge!(@endpoints ||= {})
       end

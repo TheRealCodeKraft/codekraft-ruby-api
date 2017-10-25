@@ -10,6 +10,17 @@ module Codekraft
 
       included do
 
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+puts "AHAHAHAHAHAHAHAHAH"
+
         if not Codekraft::Api.configuration.nil? and not Codekraft::Api.configuration.resources.nil?
 
           Codekraft::Api::Utils::Logger.log "Mouting API Endpoints".yellow
