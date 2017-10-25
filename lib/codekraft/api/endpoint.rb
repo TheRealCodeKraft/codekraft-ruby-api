@@ -27,10 +27,8 @@ module Codekraft
             if not (res.has_key?(:service) and res[:service].is_a?(Object))
               # Searching for service in custom source code
               res[:service] = "#{res[:name].camelize}Service"
-puts res[:service]
               # Service does not exists in custom source code
               if not (res[:service].safe_constantize and res[:service].safe_constantize.is_a?(Class))
-puts "DOES NOT EXISTS"
                 #res[:model] = res[:name].camelize unless (res.has_key? :model and not res[:model].nil?)
 
                 # Model is not set on resource
@@ -117,14 +115,14 @@ puts "DOES NOT EXISTS"
                     end
                   end
 
-                  serializerKlassName = "#{res[:name].capitalize}Serializer"
+                  serializerKlassName = "#{res[:name].camelize}Serializer"
                   if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
-                    Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
                     serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : {}
                     serializerKlass = Class.new(Codekraft::Api::Serializer::Base) do
                       attributes *serializer_attributes
                     end
                     Object.const_set serializerKlassName, serializerKlass
+                    Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
                   end
 
                   res[:service].send(callService, params)

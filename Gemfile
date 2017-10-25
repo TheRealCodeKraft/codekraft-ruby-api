@@ -37,3 +37,6 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'doorkeeper'
 
 gem 'colorize'
+
+gem 'paperclip'
+gem 'aws-sdk'
