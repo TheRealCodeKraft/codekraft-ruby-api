@@ -11,7 +11,7 @@ module Codekraft
         end
 
         def fetchAll params
-           @model.all
+           @model.where(params)
         end
 
         def fetchOne params
