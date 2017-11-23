@@ -20,7 +20,6 @@ module Codekraft
             res[:name] = key.to_s
             res[:plural] = res[:name]+"s" unless (res.has_key? :plural and not res[:plural].nil?)
 
-            puts ""
             Codekraft::Api::Utils::Logger.log "... MOUNT #{res[:plural].to_s}".light_blue
 
             # Resource has no correct service set

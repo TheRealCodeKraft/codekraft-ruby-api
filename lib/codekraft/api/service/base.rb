@@ -26,6 +26,7 @@ module Codekraft
           entity = @model.find(params[:id])
           params.delete :id
           entity.update!(params)
+          entity
         end
 
         def destroy params
