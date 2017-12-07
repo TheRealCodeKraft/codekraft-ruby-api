@@ -95,8 +95,8 @@ module Codekraft
                 desc endpoint[:method].upcase + " " + res[:name]
                 params do
                 end
-                self.send(endpoint[:method], *{route: endpoint[:route], root: res[:plural]}) do
-                  if (endpoint[:auth])
+                self.send(endpoint[:method], *[endpoint[:route], {root: res[:plural]}]) do
+                  if endpoint[:auth]
                     endpoint[:auth].each do |auth|
                       send(auth)
                     end
