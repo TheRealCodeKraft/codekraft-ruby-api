@@ -67,7 +67,7 @@ module Codekraft
               ActiveRecord::Base.establish_connection # Establishes connection
               ActiveRecord::Base.connection # Calls connection object
 
-              if not ActiveRecord::Base.connection.table_exists? res[:plural]
+              if not ActiveRecord::Base.connection.data_source_exists? res[:plural]
                 Codekraft::Api::Utils::Logger.log "MiSSING |>".light_red + " Table " + "#{res[:plural]}".light_green + " <| " + "You may create the table with db migration".light_yellow
               end
             rescue
@@ -129,6 +129,7 @@ module Codekraft
                     Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
                   end
 
+                  res[:service].setCurrentUser current_user
                   res[:service].send(callService, params)
                 end
               end

@@ -3,8 +3,6 @@ module Codekraft
     module Model
       class User < Base
 
-        before_destroy :before_destroy
-
         validates_format_of :firstname, :with => /\A[^0-9`!@#\$%\^&*+_=]+\z/, if: '!no_password'
         validates_format_of :lastname, :with => /\A[^0-9`!@#\$%\^&*+_=]+\z/, if: '!no_password'
 

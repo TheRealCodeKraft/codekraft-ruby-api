@@ -3,8 +3,8 @@ module Codekraft
     module Service
       class User < Base
 
-        def initialize
-          super(Codekraft::Api::Model::User)
+        def initialize type=nil
+          super(type.nil? ? Codekraft::Api::Model::User : type)
         end
 
         def create params

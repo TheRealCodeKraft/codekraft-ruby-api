@@ -10,6 +10,10 @@ module Codekraft
           @model
         end
 
+        def setCurrentUser user
+          @current_user = user
+        end
+
         def fetchAll params
            @model.where(params)
         end

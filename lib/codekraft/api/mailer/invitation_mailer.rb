@@ -10,7 +10,7 @@ module Codekraft
           user.save!
 
           @user = user
-          @url = base_url + "/?email=#{user.email}&stamp=#{stamp}"
+          @url = base_url + "/dashboard?email=#{user.email}&stamp=#{stamp}"
 
           mail(to: user.email, from:Codekraft::Api.configuration.default_mail_from, subject: "Rendez-vous sur notre site")
 

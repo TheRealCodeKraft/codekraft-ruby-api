@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.add_dependency "resque"
   s.add_dependency "resque-scheduler"
 
-  s.add_dependency "redis"
+  s.add_dependency "redis", "3.3.5"
 
   s.add_dependency "rack-cors"
   s.add_dependency "doorkeeper"
