@@ -92,7 +92,7 @@ module Codekraft
                   next
                 end
                 Codekraft::Api::Utils::Logger.log "| ".green + "#{endpoint[:method].upcase}".yellow + "\t/#{res[:plural]}".light_blue + "#{endpoint[:route]}"
-                desc endpoint[:method].upcase + " " + res[:name]
+                desc endpoint.has_key?(:description) ? endpoint[:description] : (endpoint[:method].upcase + " " + res[:name])
                 params do
                 end
                 self.send(endpoint[:method], *[endpoint[:route], {root: res[:plural]}]) do
