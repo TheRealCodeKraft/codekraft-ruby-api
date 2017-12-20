@@ -27,7 +27,7 @@ module Codekraft
           end
 
           def resource_owner
-            @user ||= (doorkeeper_token.nil? ? nil : Codekraft::Api::Model::User.find(doorkeeper_token[:resource_owner_id]))
+            @user ||= ((doorkeeper_token.nil? || doorkeeper_token[:resource_owner_id].nil?) ? nil : Codekraft::Api::Model::User.find(doorkeeper_token[:resource_owner_id]))
           end
 
           def current_scopes
