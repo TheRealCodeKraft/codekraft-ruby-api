@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
   s.add_dependency "colorize"
 
   s.add_dependency "paperclip"
-  s.add_dependency "aws-sdk"
+  s.add_dependency "aws-sdk", "< 3.0"
 
   s.add_development_dependency "pg"
 end
