@@ -39,4 +39,4 @@ gem 'doorkeeper'
 gem 'colorize'
 
 gem 'paperclip'
-gem 'aws-sdk'
+gem 'aws-sdk', '< 3.0'
