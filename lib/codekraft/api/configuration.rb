@@ -40,6 +40,12 @@ module Codekraft
             route: "/:id/:fieldname",
             service: "upload",
             auth: [:doorkeeper_authorize!]
+          },
+          deleteFile: {
+            method: "delete",
+            route: "/:id/:fieldname",
+            service: "deleteFile",
+            auth: [:doorkeeper_authorize!]
           }
         }.merge!(@endpoints ||= {})
       end

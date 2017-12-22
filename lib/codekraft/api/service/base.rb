@@ -44,6 +44,15 @@ module Codekraft
           entity.update!(params)
           entity
         end
+
+        def deleteFile params
+          entity = @model.find(params[:id])
+          #entity[params[:fieldname]].destroy
+          entity.sheet.destroy
+          entity.save!
+          entity
+        end
+
       end
     end
   end
