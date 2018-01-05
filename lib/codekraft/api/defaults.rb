@@ -41,8 +41,19 @@ module Codekraft
             end
           end
 
+          def authorize_superadmin!
+            if not is_superadmin?
+              status 401
+              error!({error: {message: "Super-Administrator specific endpoint, unauthorized !", status: 401}}, 401)
+            end
+          end
+
           def is_admin?
-            current_user.role == "admin"
+            current_user.role == "admin" || current_user.role == "superadmin"
+          end
+
+          def is_superadmin?
+            current_user.role == "superadmin"
           end
 
         end

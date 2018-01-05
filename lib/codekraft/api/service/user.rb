@@ -30,6 +30,7 @@ module Codekraft
           if params.has_key? :password
             params[:salt] = BCrypt::Engine.generate_salt
             params[:encrypted_password] = encrypt_password(params[:password], params[:salt])
+            params[:no_password] = false
             params.delete :password
             params.delete :password_confirm
           end
