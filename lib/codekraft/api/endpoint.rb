@@ -60,7 +60,9 @@ module Codekraft
               res[:model] = res[:service].model
             else
               Codekraft::Api::Utils::Logger.log "ERROR |>".light_red + " Service for " + "#{res[:name]}".light_green + " does not own a correct Model".light_red + " <| " + "You may experience some trouble in execution".light_yellow
-              res[:service] = Codekraft::Api::Service::Base.new(Codekraft::Api::Model::Base)
+              if res[:service].nil?
+                res[:service] = Codekraft::Api::Service::Base.new(Codekraft::Api::Model::Base)
+              end
             end
 
             begin
@@ -117,7 +119,7 @@ module Codekraft
                   serializerKlassName = "#{res[:name].camelize}Serializer"
                   if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
                     serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : []
-                    if serializer_attributes.size == 0
+                    if serializer_attributes.size == 0 and not res[:model].nil?
                       res[:model].new.attributes.each do |attr_name, attr_value|
                         serializer_attributes.push attr_name
                       end
@@ -129,7 +131,9 @@ module Codekraft
                     Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
                   end
 
-                  res[:service].setCurrentUser current_user
+                  if res[:service].respond_to?(:setCurrentUser)
+                    res[:service].setCurrentUser current_user
+                  end
                   res[:service].send(callService, params)
                 end
               end
