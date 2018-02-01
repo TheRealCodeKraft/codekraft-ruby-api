@@ -7,6 +7,9 @@ module Codekraft
       require 'codekraft/api/model/metauri'
       require 'codekraft/api/model/attachment'
       require 'codekraft/api/model/page'
+
+      require 'codekraft/api/model/notification_desc'
+      require 'codekraft/api/model/notification'
     end
   end
 end
