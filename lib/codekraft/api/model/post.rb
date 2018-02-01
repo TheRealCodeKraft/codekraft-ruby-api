@@ -3,7 +3,10 @@ module Codekraft
     module Model
       class Post < Base
         belongs_to :user
-        scope :published, -> { where('published_at <= ?', Time.zone.now) }
+        default_scope -> { where('published_at <= ?', Time.zone.now).order(published_at: :desc) }
+        scope :published, -> { where('published_at <= ?', Time.zone.now).order(published_at: :desc) }
+        has_many :attachments, as: :parent
+        has_and_belongs_to_many :metauris
 
         def self.content_attr(attr_name, attr_type = :string)
           content_attributes[attr_name] = attr_type

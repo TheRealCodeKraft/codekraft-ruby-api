@@ -95,8 +95,6 @@ module Codekraft
                 end
                 Codekraft::Api::Utils::Logger.log "| ".green + "#{endpoint[:method].upcase}".yellow + "\t/#{res[:plural]}".light_blue + "#{endpoint[:route]}"
                 desc endpoint.has_key?(:description) ? endpoint[:description] : (endpoint[:method].upcase + " " + res[:name])
-                params do
-                end
                 self.send(endpoint[:method], *[endpoint[:route], {root: res[:plural]}]) do
                   if endpoint[:auth]
                     endpoint[:auth].each do |auth|
@@ -134,7 +132,25 @@ module Codekraft
                   if res[:service].respond_to?(:setCurrentUser)
                     res[:service].setCurrentUser current_user
                   end
-                  res[:service].send(callService, params)
+
+                  page=nil
+                  per_page=nil
+                  if params.has_key? :page 
+                    page = params[:page].to_i
+                    params.delete :page
+                  end
+                  if params.has_key? :per_page
+                    per_page = params[:per_page].to_i
+                    params.delete :per_page
+                  end
+
+                  result = res[:service].send(callService, params)
+
+                  if not page.nil? and not per_page.nil?
+                    result = result.limit(per_page).offset(per_page * (page - 1))
+                  end
+
+                  result
                 end
               end
             end
