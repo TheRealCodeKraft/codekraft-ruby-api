@@ -116,6 +116,16 @@ module Codekraft
 
                   serializerKlassName = "#{res[:name].camelize}Serializer"
                   if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
+                    Codekraft::Api::Utils::Logger.debug res[:model].name 
+                    serializerKlassName = res[:model].name
+                    if serializerKlassName.include?("::Model")
+                      serializerKlassName["::Model"] = "::Serializer"
+                    end
+                    serializerKlassName = "#{serializerKlassName}Serializer"
+                  end
+
+                  if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
+                    serializerKlassName = "#{res[:name].camelize}Serializer"
                     serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : []
                     if serializer_attributes.size == 0 and not res[:model].nil?
                       res[:model].new.attributes.each do |attr_name, attr_value|

@@ -5,6 +5,10 @@ module Codekraft
         def self.log message
           puts " CODEKRAFT|> ".green + message
         end
+
+        def self.debug message
+          puts " DEBUGGER|>>> ".yellow + message
+        end
       end
     end
   end

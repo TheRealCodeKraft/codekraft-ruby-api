@@ -9,6 +9,8 @@ module Codekraft
       require 'codekraft/api/service/post'
       require 'codekraft/api/service/page'
 
+      require 'codekraft/api/service/notification_service'
+
     end
   end
 end
