@@ -13,6 +13,8 @@ module Codekraft
         validates :salt, presence: true, if: '!no_password'
         validates :encrypted_password, presence: true, if: '!no_password'
 
+        has_many :notifications, as: :recipient
+
         has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/default_avatar.png"
         do_not_validate_attachment_file_type :avatar
 
