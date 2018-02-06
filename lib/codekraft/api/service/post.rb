@@ -8,17 +8,16 @@ module Codekraft
         end
 
         def create params
-          puts params.inspect
           if params.has_key? :attachments
             attachments=[]
             params[:attachments].each do |file|
-              puts file.inspect
               attachments << Codekraft::Api::Model::Attachment.create!({attachment: ActionDispatch::Http::UploadedFile.new(file)})
             end
             params[:attachments] = attachments
           end
-          params[:user] = @current_user
-          params[:author_name] = @current_user.firstname + " " + @current_user.lastname
+          user = @current_user.nil? ? params[:user] : @current_user
+          params[:user] = user
+          params[:author_name] = user.firstname + " " + user.lastname
           params[:published_at] = DateTime.now
           super(params)
         end
