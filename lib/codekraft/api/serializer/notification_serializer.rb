@@ -10,7 +10,7 @@ module Codekraft
             if object.sender.avatar.url.include?("s3.amazonaws")
               "https:#{object.sender.avatar.url.sub("s3.amazonaws", "s3.eu-west-2.amazonaws")}"
             else
-              "#{Codekraft::Api::Configuration}/#{object.sender.avatar.url}"
+              "https://forgemeup-api.herokuapp.com#{object.avatar.url}"
             end
           else
             "http://localhost:3000#{object.sender.avatar.url}"
