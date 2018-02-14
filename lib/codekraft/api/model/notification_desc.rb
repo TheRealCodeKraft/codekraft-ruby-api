@@ -4,6 +4,7 @@ module Codekraft
       class NotificationDesc < Base
 
         has_many :notifications
+        has_many :subscriptions
 
       end
     end

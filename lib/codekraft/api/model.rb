@@ -10,6 +10,7 @@ module Codekraft
 
       require 'codekraft/api/model/notification_desc'
       require 'codekraft/api/model/notification'
+      require 'codekraft/api/model/subscription'
     end
   end
 end

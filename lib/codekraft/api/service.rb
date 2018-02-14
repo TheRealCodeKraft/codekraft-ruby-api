@@ -10,6 +10,7 @@ module Codekraft
       require 'codekraft/api/service/page'
 
       require 'codekraft/api/service/notification_service'
+      require 'codekraft/api/service/subscription_service'
 
     end
   end
