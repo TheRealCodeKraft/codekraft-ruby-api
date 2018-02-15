@@ -5,7 +5,7 @@ module Codekraft
         belongs_to :user
         default_scope -> { where('published_at <= ?', Time.zone.now).order(published_at: :desc) }
         scope :published, -> { where('published_at <= ?', Time.zone.now).order(published_at: :desc) }
-        has_many :attachments, as: :parent
+        has_many :attachments, as: :parent, dependent: :destroy
         has_and_belongs_to_many :metauris
 
         def self.content_attr(attr_name, attr_type = :string)

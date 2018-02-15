@@ -22,6 +22,30 @@ module Codekraft
           super(params)
         end
 
+        def update params
+          post = @model.find(params[:id])
+          if params.has_key? :attachments
+            attachments = []
+            if not params[:attachments].empty?
+              params[:attachments].each do |attachment|
+                a = JSON.parse("{}")
+                if attachment.is_a? String
+                  a = JSON.parse(attachment)
+                end
+                if a.has_key? "id"
+                  attachment = Codekraft::Api::Model::Attachment.find(a["id"])
+                else
+puts attachment.inspect
+                  attachment = Codekraft::Api::Model::Attachment.create!({attachment: ActionDispatch::Http::UploadedFile.new(attachment)})
+                end
+                attachments << attachment
+              end
+            end
+            params[:attachments] = attachments  
+          end
+          super(params)
+        end
+
         def fetchAll params
           #payload = nil
           where = self.model

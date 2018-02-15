@@ -3,7 +3,7 @@ module Codekraft
     module Serializer
       class AttachmentSerializer < Base
 
-        attributes :file_url, :created_at, :updated_at
+        attributes :id, :file_url, :created_at, :updated_at
 
         def file_url
           if Rails.env.production?
