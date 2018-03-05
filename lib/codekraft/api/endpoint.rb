@@ -115,8 +115,7 @@ module Codekraft
                   end
 
                   serializerKlassName = "#{res[:name].camelize}Serializer"
-                  if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
-                    Codekraft::Api::Utils::Logger.debug res[:model].name 
+                  if not res[:model].nil? and not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
                     serializerKlassName = res[:model].name
                     if serializerKlassName.include?("::Model")
                       serializerKlassName["::Model"] = "::Serializer"
