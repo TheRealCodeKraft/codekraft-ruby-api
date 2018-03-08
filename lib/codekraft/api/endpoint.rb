@@ -138,6 +138,13 @@ module Codekraft
                     Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
                   end
 
+									cu = current_user
+									serializerKlass.singleton_class.class_eval do
+										define_method(:current_user) do
+											cu
+										end
+									end
+
                   if res[:service].respond_to?(:setCurrentUser)
                     res[:service].setCurrentUser current_user
                   end

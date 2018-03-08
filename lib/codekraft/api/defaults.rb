@@ -14,6 +14,10 @@ module Codekraft
 
         helpers do
 
+					def default_serializer_options
+						{ current_user: current_user}
+					end
+
           def logger
             Rails.logger
           end
