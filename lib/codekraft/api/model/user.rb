@@ -18,6 +18,8 @@ module Codekraft
         has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/default_avatar.png"
         do_not_validate_attachment_file_type :avatar
 
+				has_many :attachments
+
         def is_admin?
           role == "admin"
         end

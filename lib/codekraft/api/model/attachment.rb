@@ -4,6 +4,7 @@ module Codekraft
       class Attachment < Base
         include Paperclip::Glue
 
+        belongs_to :user
         belongs_to :parent, polymorphic: true
 
         has_attached_file :attachment, :styles => { :large => "1500x1500>", :medium => "500x500>", :thumb => "100x100>" }
