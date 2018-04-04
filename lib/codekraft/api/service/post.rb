@@ -11,7 +11,7 @@ module Codekraft
           if params.has_key? :attachments
             attachments=[]
             params[:attachments].each do |file|
-              attachments << Codekraft::Api::Model::Attachment.create!({attachment: ActionDispatch::Http::UploadedFile.new(file)})
+              attachments << Codekraft::Api::Model::Attachment.create!({attachment: ActionDispatch::Http::UploadedFile.new(file), user: @current_user})
             end
             params[:attachments] = attachments
           end
@@ -36,7 +36,7 @@ module Codekraft
                   attachment = Codekraft::Api::Model::Attachment.find(a["id"])
                 else
 puts attachment.inspect
-                  attachment = Codekraft::Api::Model::Attachment.create!({attachment: ActionDispatch::Http::UploadedFile.new(attachment)})
+                  attachment = Codekraft::Api::Model::Attachment.create!({attachment: ActionDispatch::Http::UploadedFile.new(attachment), user: @current_user})
                 end
                 attachments << attachment
               end
