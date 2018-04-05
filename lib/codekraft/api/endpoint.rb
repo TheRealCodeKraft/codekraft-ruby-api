@@ -151,18 +151,20 @@ module Codekraft
 
                   page=nil
                   per_page=nil
-                  if params.has_key? :page 
-                    page = params[:page].to_i
-                    params.delete :page
-                  end
-                  if params.has_key? :per_page
-                    per_page = params[:per_page].to_i
-                    params.delete :per_page
-                  end
+									if not endpoint.has_key? :transfer_pagination or not endpoint[:transfer_pagination]
+										if params.has_key? :page 
+											page = params[:page].to_i
+											params.delete :page
+										end
+										if params.has_key? :per_page
+											per_page = params[:per_page].to_i
+											params.delete :per_page
+										end
+									end
 
                   result = res[:service].send(callService, params)
 
-                  if not page.nil? and not per_page.nil?
+                  if not result.nil? and not result.is_a? Searchkick::Results and not page.nil? and not per_page.nil?
                     result = result.limit(per_page).offset(per_page * (page - 1))
                   end
 
