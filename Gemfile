@@ -40,3 +40,6 @@ gem 'colorize'
 
 gem 'paperclip'
 gem 'aws-sdk', '< 3.0'
+
+gem 'kaminari'
+gem 'kaminari-grape'

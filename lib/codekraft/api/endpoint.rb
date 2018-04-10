@@ -151,7 +151,7 @@ module Codekraft
 
                   page=nil
                   per_page=nil
-									if not endpoint.has_key? :transfer_pagination or not endpoint[:transfer_pagination]
+									if not endpoint.has_key? :transfer_pagination or not endpoint[:transfer_pagination].nil?
 										if params.has_key? :page 
 											page = params[:page].to_i
 											params.delete :page
@@ -165,7 +165,11 @@ module Codekraft
                   result = res[:service].send(callService, params)
 
                   if not result.nil? and not result.is_a? Searchkick::Results and not page.nil? and not per_page.nil?
-                    result = result.limit(per_page).offset(per_page * (page - 1))
+										params[:page] = page
+										params[:per_page] = per_page
+                    #result = result.limit(per_page).offset(per_page * (page - 1))
+                    Codekraft::Api::Utils::Logger.log "PAGINATION >> ".light_red + " Page :  " + "#{page}".light_green + " | Per page : " + "#{per_page}".light_red
+          					result = paginate(::Kaminari::paginate_array(result).page(page).per(per_page))
                   end
 
                   result
