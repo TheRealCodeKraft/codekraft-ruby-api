@@ -3,7 +3,11 @@ module Codekraft
     module Serializer
       class NotificationSerializer < Base
 
-        attributes :description, :sender_avatar_url, :created_at
+        attributes :id, :description, :gdescription, :sender_fullname, :sender_avatar_url, :created_at
+
+				def sender_fullname
+					object.sender.fullname
+				end
 
         def sender_avatar_url
           if Rails.env.production?

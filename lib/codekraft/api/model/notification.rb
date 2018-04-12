@@ -15,6 +15,11 @@ module Codekraft
           eval '"' + self.notification_desc.template + '"'
         end
 
+        def gdescription 
+          notif = self
+          eval '"' + self.notification_desc.gtemplate + '"'
+        end
+
       end
     end
   end
