@@ -63,7 +63,7 @@ module Codekraft
                 route: "/me",
                 service: {
                   function: "fetchOne",
-                  params: {id: "current_user.id"},
+                  params: {id: "current_user ? current_user.id : nil"},
                   auth: [:doorkeeper_authorize!]
                 }
               },
