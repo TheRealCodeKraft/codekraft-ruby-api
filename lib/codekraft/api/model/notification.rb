@@ -6,6 +6,7 @@ module Codekraft
         default_scope { order(created_at: :desc) }
 
         belongs_to :item, polymorphic: true
+				belongs_to :parent_post, class_name: "Codekraft::Api::Model::Post"
         belongs_to :sender, polymorphic: true
         belongs_to :recipient, polymorphic: true
         belongs_to :notification_desc

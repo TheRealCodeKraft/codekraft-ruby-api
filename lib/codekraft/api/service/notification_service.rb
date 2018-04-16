@@ -12,6 +12,9 @@ module Codekraft
         end
 
         def create params
+					if not params[:item].nil? and params[:item].is_a? Object and params[:item].respond_to? :post
+						params[:parent_post] = params[:item].post
+					end
           notification = super(params)
           Notifications::NewNotifJob.perform_later(notification)
           notification

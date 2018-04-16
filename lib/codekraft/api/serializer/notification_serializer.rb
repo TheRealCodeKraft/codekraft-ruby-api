@@ -3,7 +3,7 @@ module Codekraft
     module Serializer
       class NotificationSerializer < Base
 
-        attributes :id, :description, :gdescription, :sender_fullname, :sender_avatar_url, :item_type, :item_id, :created_at
+        attributes :id, :description, :gdescription, :sender_fullname, :sender_avatar_url, :item_type, :item_id, :parent_post_id, :created_at
 
 				def sender_fullname
 					object.sender.fullname
