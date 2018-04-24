@@ -99,7 +99,36 @@ module Codekraft
             serializer: {
               attributes: [:id, :slug, :title, :body, :group]
             }
-          }
+          },
+					post: {
+						endpoints: {
+							fetchAll: {
+								auth: [:doorkeeper_authorize!]
+							},
+						}
+					},
+					notification: {
+						service: Codekraft::Api::Service::NotificationService.new,
+						endpoints: {
+							fetchAll: {
+								auth: [:doorkeeper_authorize!]
+							}
+						}
+					},
+					subscription: {
+						service: Codekraft::Api::Service::SubscriptionService.new,
+						endpoints: {
+							fetchAll: {
+								auth: [:doorkeeper_authorize!]
+							},
+							toggle: {
+								method: "put",
+								route: "/toggle/:notification_desc_id/:type",
+								service: { function: "toggle" },
+								auth: [:doorkeeper_authorize!]
+							}
+						}
+					},
         }.merge!(@resources ||= {})
       end
       
