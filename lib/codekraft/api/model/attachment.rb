@@ -7,7 +7,7 @@ module Codekraft
         belongs_to :user
         belongs_to :parent, polymorphic: true
 
-        has_attached_file :attachment, :styles => { :large => "1500x1500>", :medium => "500x500>", :thumb => "100x100>" }
+        has_attached_file :attachment
         do_not_validate_attachment_file_type :attachment
       end
     end
