@@ -48,7 +48,6 @@ Gem::Specification.new do |s|
   s.add_dependency "aws-sdk", "< 3.0"
 	s.add_dependency "aws-sdk-s3"
 
-	#s.add_dependency "kaminar
 	s.add_dependency "kaminari-grape"
 	s.add_dependency "grape-kaminari"
 
