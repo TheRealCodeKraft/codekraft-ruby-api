@@ -45,6 +45,8 @@ module Codekraft
                     end
                     Object.const_set res[:model], modelKlass
                     res[:model] = res[:model].constantize
+									else
+										res[:model] = res[:model].safe_constantize
                   end
 
                 end

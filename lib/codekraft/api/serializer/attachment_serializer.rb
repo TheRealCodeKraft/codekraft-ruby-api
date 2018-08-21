@@ -3,7 +3,7 @@ module Codekraft
     module Serializer
       class AttachmentSerializer < Base
 
-        attributes :id, :file_url, :original_file_url, :created_at, :updated_at
+        attributes :id, :file_url, :original_filename, :original_file_url, :created_at, :updated_at
 
         def file_url
           if Rails.env.production?
@@ -16,6 +16,10 @@ module Codekraft
             "http://localhost:3000#{object.attachment.url(:medium)}"
           end
         end
+
+				def original_filename
+					object.attachment.original_filename
+				end
 
 				def original_file_url
 					if Rails.env.production?

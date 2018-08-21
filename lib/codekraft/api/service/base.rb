@@ -55,8 +55,9 @@ module Codekraft
 
         def deleteFile params
           entity = @model.find(params[:id])
-          #entity[params[:fieldname]].destroy
-          entity.sheet.destroy
+					Rails.logger.info entity.public_send(params[:fieldname])
+          entity.public_send(params[:fieldname]).destroy
+          #entity.sheet.destroy
           entity.save!
           entity
         end
