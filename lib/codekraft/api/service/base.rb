@@ -15,7 +15,10 @@ module Codekraft
         end
 
         def fetchAll params
-           @model.where(params)
+					if params.has_key? :all
+						params.delete :all
+					end
+          @model.where(params)
         end
 
         def fetchOne params
