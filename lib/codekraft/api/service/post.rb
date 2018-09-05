@@ -48,6 +48,9 @@ puts attachment.inspect
 
         def fetchAll params
           #payload = nil
+					if params.has_key? :all
+						params.delete :all
+					end
           where = self.model
           params.each do |key, param|
             if self.model.content_attributes.with_indifferent_access.has_key? key
