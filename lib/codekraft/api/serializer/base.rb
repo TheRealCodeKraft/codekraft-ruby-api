@@ -13,6 +13,11 @@ module Codekraft
           end
         end
 
+
+        def is_logged?
+          not current_user.nil?
+        end
+
         def is_admin?
           if not current_user.nil?
             current_user.is_admin?
