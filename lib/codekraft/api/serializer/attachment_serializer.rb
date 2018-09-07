@@ -13,7 +13,7 @@ module Codekraft
               "https://forgemeup-api.herokuapp.com#{object.attachment.url(:medium)}"
             end
           else
-            "http://localhost:3000#{object.attachment.url(:medium)}"
+            "#{ENV['BASE_URL'] || 'http://localhost:3000'}#{object.attachment.url(:medium)}"
           end
         end
 
@@ -29,7 +29,7 @@ module Codekraft
               "https://forgemeup-api.herokuapp.com#{object.attachment.url(:original)}"
             end
           else
-            "http://localhost:3000#{object.attachment.url(:original)}"
+            "#{ENV['BASE_URL'] || 'http://localhost:3000'}#{object.attachment.url(:original)}"
           end
 				end
 
