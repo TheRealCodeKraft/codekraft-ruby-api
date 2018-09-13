@@ -23,6 +23,10 @@ module Codekraft
         def is_admin?
           role == "admin"
         end
+
+				def fullname
+					"#{firstname} #{lastname}"
+				end
       end
     end
   end

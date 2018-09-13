@@ -86,7 +86,7 @@ module Codekraft
               }
             },
             serializer: {
-              attributes: [:id, :firstname, :lastname, :email, :role, :no_password]
+              attributes: [:id, :firstname, :lastname, :fullname, :email, :role, :no_password]
             }
           },
           page: {
