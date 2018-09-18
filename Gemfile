@@ -34,7 +34,7 @@ gem 'resque-scheduler'
 gem 'redis'
 
 gem 'rack-cors', :require => 'rack/cors'
-gem 'doorkeeper'
+gem 'doorkeeper', '< 5.0'
 
 gem 'colorize'
 
