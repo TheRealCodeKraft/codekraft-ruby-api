@@ -21,7 +21,7 @@ module Codekraft
           params[:email] = params[:email].downcase
           user = super(params)
           if user.no_password
-            Codekraft::Api::Mailer::InvitationMailer.invite(user).deliver
+            Codekraft::Api::Mailer::InvitationMailer.invite(user, ENV["INVITATION_MAIL_TITLE"]).deliver
           end
           user
         end

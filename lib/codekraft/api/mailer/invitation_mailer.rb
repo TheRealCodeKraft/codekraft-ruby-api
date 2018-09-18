@@ -2,7 +2,7 @@ module Codekraft
   module Api
     module Mailer
       class InvitationMailer < Base
-        def invite user
+        def invite user, title
           stamp = SecureRandom.uuid
           user.stamp_salt = BCrypt::Engine.generate_salt
           user.stamp = Codekraft::Api::Service::User.new.encrypt_password(stamp, user.stamp_salt)
@@ -12,7 +12,7 @@ module Codekraft
           @user = user
           @url = base_url + "/dashboard?email=#{user.email}&stamp=#{stamp}"
 
-          mail(to: user.email, from:Codekraft::Api.configuration.default_mail_from, subject: "Vous êtes invité à rejoindre la plateforme")
+          mail(to: user.email, from:Codekraft::Api.configuration.default_mail_from, subject: title.nil? ? "Vous êtes invité à rejoindre la plateforme" : title)
 
         end
       end
