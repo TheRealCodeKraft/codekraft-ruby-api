@@ -43,7 +43,12 @@ module Codekraft
         def upload params
           entity = @model.find(params[:id])
 
-					paramClassName = @model.reflect_on_all_associations.select { |assoc| assoc.name == params[:fieldname].to_sym }[0].class_name
+					Rails.logger.info params[:fieldname]
+					Rails.logger.info @model.reflect_on_all_associations
+					paramClassName = ""
+					if @model.reflect_on_all_associations.select { |assoc| assoc.name == params[:fieldname].to_sym }.size > 0
+						paramClassName = @model.reflect_on_all_associations.select { |assoc| assoc.name == params[:fieldname].to_sym }[0].class_name
+					end
 
 					if paramClassName == "Codekraft::Api::Model::Attachment"
 						params[params[:fieldname]] = Codekraft::Api::Model::Attachment.create!({attachment: ActionDispatch::Http::UploadedFile.new(params[params[:fieldname]])})
