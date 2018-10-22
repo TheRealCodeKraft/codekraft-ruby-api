@@ -22,40 +22,37 @@ module Codekraft
 
 						Codekraft::Api::Utils::Logger.log "... MOUNT #{res[:plural].to_s}".light_blue
 
-						# Resource has no correct service set
-						if not (res.has_key?(:service) and res[:service].is_a?(Object))
-							# Searching for service in custom source code
-							res[:service] = "#{res[:name].camelize}Service"
-							# Service does not exists in custom source code
-							if not (res[:service].safe_constantize and res[:service].safe_constantize.is_a?(Class))
-								#res[:model] = res[:name].camelize unless (res.has_key? :model and not res[:model].nil?)
+						# Searching for service in custom source code
+						res[:service] = "#{res[:name].camelize}Service"
+						# Service does not exists in custom source code
+						if not (res[:service].safe_constantize and res[:service].safe_constantize.is_a?(Class))
+							#res[:model] = res[:name].camelize unless (res.has_key? :model and not res[:model].nil?)
 
-								# Model is not set on resource
-								if not res.has_key? :model
-									res[:model] = res[:name].camelize
-								end
-
-								# Model is not a class
-								if not res[:model].is_a?(Class)
-
-									# Model does not exists in custom source code
-									if not (res[:model].safe_constantize and res[:model].safe_constantize.is_a?(Class))
-										Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Model " + "#{res[:model]}".light_green + " <| BUILT!".light_red
-										modelKlass = Class.new(Codekraft::Api::Model::Base) do
-										end
-										Object.const_set res[:model], modelKlass
-										res[:model] = res[:model].constantize
-									else
-										res[:model] = res[:model].safe_constantize
-									end
-
-								end
-								res[:service] = Codekraft::Api::Service::Base.new(res[:model])
-
-								# Service exists in custom source code
-							else
-								res[:service] = res[:service].constantize.new
+							# Model is not set on resource
+							if not res.has_key? :model
+								res[:model] = res[:name].camelize
 							end
+
+							# Model is not a class
+							if not res[:model].is_a?(Class)
+
+								# Model does not exists in custom source code
+								if not (res[:model].safe_constantize and res[:model].safe_constantize.is_a?(Class))
+									Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Model " + "#{res[:model]}".light_green + " <| BUILT!".light_red
+									modelKlass = Class.new(Codekraft::Api::Model::Base) do
+									end
+									Object.const_set res[:model], modelKlass
+									res[:model] = res[:model].constantize
+								else
+									res[:model] = res[:model].safe_constantize
+								end
+
+							end
+							res[:service] = Codekraft::Api::Service::Base.new(res[:model])
+
+							# Service exists in custom source code
+						else
+							res[:service] = res[:service].constantize.new
 						end
 
 						if res[:service].respond_to?(:model) and res[:service].model.is_a?(Class)
