@@ -1,7 +1,7 @@
 module Codekraft
   module Api
     class Configuration
-      attr_accessor :prod_url, :default_mail_from, :endpoints, :resources
+      attr_accessor :prod_url, :default_mail_from, :endpoints, :resources, :user_service
 
       def endpoints
         {
@@ -53,7 +53,7 @@ module Codekraft
       def resources
         {
           user: {
-            service: Codekraft::Api::Service::User.new,
+            service: @user_service.nil? ? Codekraft::Api::Service::User.new : @user_service,
             endpoints: {
               create: {
                 auth: nil

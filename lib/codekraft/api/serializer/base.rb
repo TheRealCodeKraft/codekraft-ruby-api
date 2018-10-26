@@ -13,7 +13,6 @@ module Codekraft
           end
         end
 
-
         def is_logged?
           not current_user.nil?
         end
