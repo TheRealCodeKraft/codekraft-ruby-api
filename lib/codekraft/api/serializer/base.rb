@@ -22,7 +22,7 @@ module Codekraft
           if not current_user.nil?
             current_user.is_admin?
           else
-            true
+            false
           end
         end
 
