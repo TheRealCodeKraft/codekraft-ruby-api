@@ -167,14 +167,13 @@ module Codekraft
 									sorter = nil
 									if params.has_key? :sort
 										sorter = params[:sort].split('|')
-										sorter = { target: sorter[0], direction: sorter[1] }
+										sorter = { target: sorter[0], direction: sorter[1] == "up" ? "ASC" : "DESC" }
 										params.delete :sort
 									end
 
 									result = res[:service].send(callService, params)
-
 									if not sorter.nil?
-										result = result.order("#{sorter[:target]} #{sorter[:direction] == "up" ? "ASC" : "DESC"}")
+										result = res[:service].send("order", result, sorter)
 									end
 
 									if not result.nil? and not result.is_a? Searchkick::Results and not (result.is_a? Hash and result.has_key? :search_kick and result[:search_kick]) and not page.nil? and not per_page.nil?

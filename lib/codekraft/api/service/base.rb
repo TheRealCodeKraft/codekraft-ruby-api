@@ -21,6 +21,10 @@ module Codekraft
           @model.where(params)
         end
 
+				def order query, sorter
+					query.order("#{sorter[:target]} #{sorter[:direction]}")
+				end
+
         def fetchOne params
           @model.find(params[:id])
         end
