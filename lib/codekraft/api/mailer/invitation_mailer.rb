@@ -10,7 +10,7 @@ module Codekraft
           user.save!
 
           @user = user
-          @url = base_url + "/dashboard?email=#{user.email}&stamp=#{stamp}"
+          @url = base_url + "?email=#{user.email}&stamp=#{stamp}"
 					@title = ENV["INVITATION_MAIL_HEADER_TITLE"]
 
           mail(to: user.email, from:Codekraft::Api.configuration.default_mail_from, subject: title.nil? ? "Vous êtes invité à rejoindre la plateforme" : title)
