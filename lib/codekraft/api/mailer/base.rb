@@ -6,7 +6,7 @@ module Codekraft
         layout 'mailer'
 
         def base_url
-          Rails.env.production? ? Codekraft::Api.configuration.prod_url : "http://localhost:3002"
+          Rails.env.production? ? Codekraft::Api.configuration.prod_url : ENV['FRONT_URL'] || "http://localhost:3002"
         end
       end
     end
