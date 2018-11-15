@@ -56,6 +56,8 @@ module Codekraft
 							else
 								res[:service] = res[:service].constantize.new
 							end
+						elsif res[:service].is_a?(String)
+							res[:service] = res[:service].safe_constantize.new
 						end
 
 						if res[:service].respond_to?(:model) and res[:service].model.is_a?(Class)
@@ -171,9 +173,10 @@ module Codekraft
 										params.delete :sort
 									end
 
+									saved_params = params.clone
 									result = res[:service].send(callService, params)
 									if not sorter.nil?
-										result = res[:service].send("order", result, sorter)
+										result = res[:service].send("order", result, sorter, saved_params)
 									end
 
 									if not result.nil? and not result.is_a? Searchkick::Results and not (result.is_a? Hash and result.has_key? :search_kick and result[:search_kick]) and not page.nil? and not per_page.nil?
