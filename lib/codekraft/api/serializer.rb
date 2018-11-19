@@ -7,6 +7,7 @@ module Codekraft
       require 'codekraft/api/serializer/notification_serializer'
       require 'codekraft/api/serializer/notification_desc_serializer'
       require 'codekraft/api/serializer/subscription_serializer'
+			#require 'codekraft/api/serializer/filter_serializer'
     end
   end
 end

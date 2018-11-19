@@ -9,6 +9,8 @@ module Codekraft
       require 'codekraft/api/model/attachment'
       require 'codekraft/api/model/page'
 
+      require 'codekraft/api/model/filter'
+
       require 'codekraft/api/model/notification_desc'
       require 'codekraft/api/model/notification'
       require 'codekraft/api/model/subscription'

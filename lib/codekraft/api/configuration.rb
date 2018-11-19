@@ -115,6 +115,17 @@ module Codekraft
 							}
 						}
 					},
+					filter: {
+						service: Codekraft::Api::Service::FilterService.new,
+						endpoints: {
+							fetchAll: {
+								auth: [:doorkeeper_authorize!]
+							}
+						},
+            serializer: {
+              attributes: [:id, :name, :category, :content]
+            }
+					},
 					subscription: {
 						service: Codekraft::Api::Service::SubscriptionService.new,
 						endpoints: {

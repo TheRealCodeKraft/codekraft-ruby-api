@@ -97,7 +97,33 @@ module Codekraft
 									Codekraft::Api::Utils::Logger.log "	> No method found for endpoint #{res[:name]} with key ".red + "#{key.to_s}".green + "." + " Ignoring ..."
 									next
 								end
+
 								Codekraft::Api::Utils::Logger.log "| ".green + "#{endpoint[:method].upcase}".yellow + "\t/#{res[:plural]}".light_blue + "#{endpoint[:route]}"
+
+								serializerKlassName = "#{res[:name].camelize}Serializer"
+								if not res[:model].nil? and not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
+									serializerKlassName = res[:model].name
+									if serializerKlassName.include?("::Model")
+										serializerKlassName["::Model"] = "::Serializer"
+									end
+									serializerKlassName = "#{serializerKlassName}Serializer"
+								end
+
+								if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
+									serializerKlassName = "#{res[:name].camelize}Serializer"
+									serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : []
+									if serializer_attributes.size == 0 and not res[:model].nil?
+										res[:model].new.attributes.each do |attr_name, attr_value|
+											serializer_attributes.push attr_name
+										end
+									end
+									serializerKlass = Class.new(Codekraft::Api::Serializer::Base) do
+										attributes *serializer_attributes
+									end
+									Object.const_set serializerKlassName, serializerKlass
+									Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
+								end
+
 								desc endpoint.has_key?(:description) ? endpoint[:description] : (endpoint[:method].upcase + " " + res[:name])
 								self.send(endpoint[:method], *[endpoint[:route], {root: res[:plural]}]) do
 									if endpoint[:auth]
@@ -118,30 +144,6 @@ module Codekraft
 										end
 									end
 
-									serializerKlassName = "#{res[:name].camelize}Serializer"
-									if not res[:model].nil? and not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
-										serializerKlassName = res[:model].name
-										if serializerKlassName.include?("::Model")
-											serializerKlassName["::Model"] = "::Serializer"
-										end
-										serializerKlassName = "#{serializerKlassName}Serializer"
-									end
-
-									if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
-										serializerKlassName = "#{res[:name].camelize}Serializer"
-										serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : []
-										if serializer_attributes.size == 0 and not res[:model].nil?
-											res[:model].new.attributes.each do |attr_name, attr_value|
-												serializer_attributes.push attr_name
-											end
-										end
-										serializerKlass = Class.new(Codekraft::Api::Serializer::Base) do
-											attributes *serializer_attributes
-										end
-										Object.const_set serializerKlassName, serializerKlass
-										Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
-									end
-
 									cu = current_user
 									serializerKlass.singleton_class.class_eval do
 										define_method(:current_user) do
@@ -152,7 +154,7 @@ module Codekraft
 									if res[:service].respond_to?(:setCurrentUser)
 										res[:service].setCurrentUser current_user
 									end
-
+									
 									page=nil
 									per_page=nil
 									if not endpoint.has_key? :transfer_pagination or endpoint[:transfer_pagination].nil?
