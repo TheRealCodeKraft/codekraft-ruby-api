@@ -76,122 +76,130 @@ module Codekraft
 							if not ActiveRecord::Base.connection.data_source_exists? res[:plural]
 								Codekraft::Api::Utils::Logger.log "MiSSING |>".light_red + " Table " + "#{res[:plural]}".light_green + " <| " + "You may create the table with db migration".light_yellow
 							end
-
-							if res.has_key? :endpoints and not res[:endpoints].nil?
-								Codekraft::Api.configuration.endpoints.each do |beKey, be|
-									if res[:endpoints].has_key? beKey
-										res[:endpoints][beKey] = be.merge res[:endpoints][beKey]
-									else
-										res[:endpoints][beKey] = be
-									end
-								end
-							else
-								res[:endpoints] = Codekraft::Api.configuration.endpoints
-							end
-
-							resource res[:plural] do
-								res[:endpoints].each do |key, endpoint|
-									if not endpoint.has_key? :method
-										Codekraft::Api::Utils::Logger.log "	> No method found for endpoint #{res[:name]} with key ".red + "#{key.to_s}".green + "." + " Ignoring ..."
-										next
-									end
-
-									Codekraft::Api::Utils::Logger.log "| ".green + "#{endpoint[:method].upcase}".yellow + "\t/#{res[:plural]}".light_blue + "#{endpoint[:route]}"
-
-									serializerKlassName = "#{res[:name].camelize}Serializer"
-									if not res[:model].nil? and not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
-										serializerKlassName = res[:model].name
-										if serializerKlassName.include?("::Model")
-											serializerKlassName["::Model"] = "::Serializer"
-										end
-										serializerKlassName = "#{serializerKlassName}Serializer"
-									end
-
-									if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
-										serializerKlassName = "#{res[:name].camelize}Serializer"
-										serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : []
-										if serializer_attributes.size == 0 and not res[:model].nil?
-											res[:model].new.attributes.each do |attr_name, attr_value|
-												serializer_attributes.push attr_name
-											end
-										end
-										serializerKlass = Class.new(Codekraft::Api::Serializer::Base) do
-											attributes *serializer_attributes
-										end
-										Object.const_set serializerKlassName, serializerKlass
-										Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
-									end
-
-									desc endpoint.has_key?(:description) ? endpoint[:description] : (endpoint[:method].upcase + " " + res[:name])
-									self.send(endpoint[:method], *[endpoint[:route], {root: res[:plural]}]) do
-										if endpoint[:auth]
-											endpoint[:auth].each do |auth|
-												send(auth)
-											end
-										end
-
-										callService = endpoint[:service]
-										if not callService.is_a?(String)
-											callService = callService[:function]
-											if endpoint[:service].has_key? :params
-												ext_params = {}
-												endpoint[:service][:params].each do |key, param|
-													ext_params[key] = self.instance_eval(param)
-												end
-												params.merge!(ext_params)
-											end
-										end
-
-										cu = current_user
-										serializerKlass.singleton_class.class_eval do
-											define_method(:current_user) do
-												cu
-											end
-										end
-
-										if res[:service].respond_to?(:setCurrentUser)
-											res[:service].setCurrentUser current_user
-										end
-										
-										page=nil
-										per_page=nil
-										if not endpoint.has_key? :transfer_pagination or endpoint[:transfer_pagination].nil?
-											if params.has_key? :page
-												page = params[:page].to_i
-												params.delete :page
-											end
-											if params.has_key? :per_page
-												per_page = params[:per_page].to_i
-												params.delete :per_page
-											end
-										end
-
-										sorter = nil
-										if params.has_key? :sort
-											sorter = params[:sort].split('|')
-											sorter = { target: sorter[0], direction: sorter[1] == "up" ? "ASC" : "DESC" }
-											params.delete :sort
-										end
-
-										saved_params = params.clone
-										result = res[:service].send(callService, params)
-										if not sorter.nil?
-											result = res[:service].send("order", result, sorter, saved_params)
-										end
-
-										if not result.nil? and not result.is_a? Searchkick::Results and not (result.is_a? Hash and result.has_key? :search_kick and result[:search_kick]) and not page.nil? and not per_page.nil?
-											params[:page] = page
-											params[:per_page] = per_page
-											#result = result.limit(per_page).offset(per_page * (page - 1))
-											Codekraft::Api::Utils::Logger.log "PAGINATION >> ".light_red + " Page :	" + "#{page}".light_green + " | Per page : " + "#{per_page}".light_red
-											result = paginate(::Kaminari::paginate_array(result).page(page).per(per_page))
-										end
-
-										result
-									end
-								end
-							end
 						rescue
+						end
+
+						if res.has_key? :endpoints and not res[:endpoints].nil?
+							Codekraft::Api.configuration.endpoints.each do |beKey, be|
+								if res[:endpoints].has_key? beKey
+									res[:endpoints][beKey] = be.merge res[:endpoints][beKey]
+								else
+									res[:endpoints][beKey] = be
+								end
+							end
+						else
+							res[:endpoints] = Codekraft::Api.configuration.endpoints
+						end
+
+						resource res[:plural] do
+							res[:endpoints].each do |key, endpoint|
+								if not endpoint.has_key? :method
+									Codekraft::Api::Utils::Logger.log "	> No method found for endpoint #{res[:name]} with key ".red + "#{key.to_s}".green + "." + " Ignoring ..."
+									next
+								end
+
+								Codekraft::Api::Utils::Logger.log "| ".green + "#{endpoint[:method].upcase}".yellow + "\t/#{res[:plural]}".light_blue + "#{endpoint[:route]}"
+
+								begin
+									ActiveRecord::Base.establish_connection # Establishes connection
+									ActiveRecord::Base.connection # Calls connection object
+						
+									if not ActiveRecord::Base.connection.data_source_exists? res[:plural]
+										serializerKlassName = "#{res[:name].camelize}Serializer"
+										if not res[:model].nil? and not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
+											serializerKlassName = res[:model].name
+											if serializerKlassName.include?("::Model")
+												serializerKlassName["::Model"] = "::Serializer"
+											end
+											serializerKlassName = "#{serializerKlassName}Serializer"
+										end
+
+										if not (serializerKlassName.safe_constantize and serializerKlassName.safe_constantize.is_a?(Class))
+											serializerKlassName = "#{res[:name].camelize}Serializer"
+											serializer_attributes = (res.has_key? :serializer and res[:serializer].has_key? :attributes) ? res[:serializer][:attributes] : []
+											if serializer_attributes.size == 0 and not res[:model].nil?
+												res[:model].new.attributes.each do |attr_name, attr_value|
+													serializer_attributes.push attr_name
+												end
+											end
+											serializerKlass = Class.new(Codekraft::Api::Serializer::Base) do
+												attributes *serializer_attributes
+											end
+											Object.const_set serializerKlassName, serializerKlass
+											Codekraft::Api::Utils::Logger.log "MISSING |>".light_red + " Serializer " + "#{serializerKlassName}".light_green + " <| BUILT!".light_red
+										end
+									end
+								rescue
+								end
+
+								desc endpoint.has_key?(:description) ? endpoint[:description] : (endpoint[:method].upcase + " " + res[:name])
+								self.send(endpoint[:method], *[endpoint[:route], {root: res[:plural]}]) do
+									if endpoint[:auth]
+										endpoint[:auth].each do |auth|
+											send(auth)
+										end
+									end
+
+									callService = endpoint[:service]
+									if not callService.is_a?(String)
+										callService = callService[:function]
+										if endpoint[:service].has_key? :params
+											ext_params = {}
+											endpoint[:service][:params].each do |key, param|
+												ext_params[key] = self.instance_eval(param)
+											end
+											params.merge!(ext_params)
+										end
+									end
+
+									cu = current_user
+									serializerKlass.singleton_class.class_eval do
+										define_method(:current_user) do
+											cu
+										end
+									end
+
+									if res[:service].respond_to?(:setCurrentUser)
+										res[:service].setCurrentUser current_user
+									end
+									
+									page=nil
+									per_page=nil
+									if not endpoint.has_key? :transfer_pagination or endpoint[:transfer_pagination].nil?
+										if params.has_key? :page
+											page = params[:page].to_i
+											params.delete :page
+										end
+										if params.has_key? :per_page
+											per_page = params[:per_page].to_i
+											params.delete :per_page
+										end
+									end
+
+									sorter = nil
+									if params.has_key? :sort
+										sorter = params[:sort].split('|')
+										sorter = { target: sorter[0], direction: sorter[1] == "up" ? "ASC" : "DESC" }
+										params.delete :sort
+									end
+
+									saved_params = params.clone
+									result = res[:service].send(callService, params)
+									if not sorter.nil?
+										result = res[:service].send("order", result, sorter, saved_params)
+									end
+
+									if not result.nil? and not result.is_a? Searchkick::Results and not (result.is_a? Hash and result.has_key? :search_kick and result[:search_kick]) and not page.nil? and not per_page.nil?
+										params[:page] = page
+										params[:per_page] = per_page
+										#result = result.limit(per_page).offset(per_page * (page - 1))
+										Codekraft::Api::Utils::Logger.log "PAGINATION >> ".light_red + " Page :	" + "#{page}".light_green + " | Per page : " + "#{per_page}".light_red
+										result = paginate(::Kaminari::paginate_array(result).page(page).per(per_page))
+									end
+
+									result
+								end
+							end
 						end
 					end
 				end
