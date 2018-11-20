@@ -47,8 +47,6 @@ module Codekraft
         def upload params
           entity = @model.find(params[:id])
 
-					Rails.logger.info params[:fieldname]
-					Rails.logger.info @model.reflect_on_all_associations
 					paramClassName = ""
 					if @model.reflect_on_all_associations.select { |assoc| assoc.name == params[:fieldname].to_sym }.size > 0
 						paramClassName = @model.reflect_on_all_associations.select { |assoc| assoc.name == params[:fieldname].to_sym }[0].class_name
@@ -67,7 +65,6 @@ module Codekraft
 
         def deleteFile params
           entity = @model.find(params[:id])
-					Rails.logger.info entity.public_send(params[:fieldname])
           entity.public_send(params[:fieldname]).destroy
           #entity.sheet.destroy
           entity.save!
