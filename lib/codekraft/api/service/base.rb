@@ -21,7 +21,7 @@ module Codekraft
           @model.where(params)
         end
 
-				def order query, sorter
+				def order query, sorter, params
 					query.order("#{sorter[:target]} #{sorter[:direction]}")
 				end
 
