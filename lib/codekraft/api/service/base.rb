@@ -74,6 +74,14 @@ module Codekraft
           entity
         end
 
+        def is_admin?
+					if @current_user and @current_user.role == "admin"
+						return true
+					end
+
+					return false
+        end
+
       end
     end
   end
