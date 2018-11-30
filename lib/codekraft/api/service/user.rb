@@ -22,6 +22,8 @@ module Codekraft
           user = super(params)
           if user.no_password
             Codekraft::Api::Mailer::InvitationMailer.invite(user, ENV["INVITATION_MAIL_TITLE"]).deliver_later
+          elsif ENV.has_key? "USER_CREATION_MAIL_TITLE"
+            Codekraft::Api::Mailer::InvitationMailer.confirm(user, ENV["USER_CREATION_MAIL_TITLE"]).deliver_later
           end
           user
         end
