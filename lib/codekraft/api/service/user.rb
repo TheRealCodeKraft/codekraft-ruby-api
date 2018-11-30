@@ -21,7 +21,9 @@ module Codekraft
           params[:email] = params[:email].downcase
           user = super(params)
           if user.no_password
-            Codekraft::Api::Mailer::InvitationMailer.invite(user, ENV["INVITATION_MAIL_TITLE"]).deliver
+            Codekraft::Api::Mailer::InvitationMailer.invite(user, ENV["INVITATION_MAIL_TITLE"]).deliver_later
+          elsif ENV.has_key? "USER_CREATION_MAIL_TITLE"
+            Codekraft::Api::Mailer::InvitationMailer.confirm(user, ENV["USER_CREATION_MAIL_TITLE"]).deliver_later
           end
           user
         end
@@ -40,7 +42,7 @@ module Codekraft
         def forgotPassword params
           user = Codekraft::Api::Model::User.find_by({email: params[:email]})
           if not user.nil?
-            Codekraft::Api::Mailer::ForgotPasswordMailer.reset_password(user).deliver
+            Codekraft::Api::Mailer::ForgotPasswordMailer.reset_password(user).deliver_later
           end
           {found: (not user.nil?)}
         end

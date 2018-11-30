@@ -16,6 +16,13 @@ module Codekraft
           mail(to: user.email, from:Codekraft::Api.configuration.default_mail_from, subject: title.nil? ? "Vous êtes invité à rejoindre la plateforme" : title)
 
         end
+
+        def confirm user, title
+          @user = user
+
+          mail(to: user.email, from: Codekraft::Api.configuration.default_mail_from, subject: title.nil? ? "Bienvenu, vous avez créé votre compte sur la plateforme" : title)
+
+        end
       end
     end
   end
