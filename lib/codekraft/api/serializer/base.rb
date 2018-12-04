@@ -25,6 +25,24 @@ module Codekraft
           end
         end
 
+				def is_role? role
+          if not current_user.nil?
+						current_user.role == role
+					else
+						false
+					end
+				end
+
+        def current_route
+          if not instance_options.nil? and instance_options.has_key? :current_route
+            instance_options[:current_route]
+          elsif not scope.nil?
+            scope.current_route
+          else
+            nil
+          end
+        end
+
 				def attachment_url attachment
 					if Rails.env.production?
 						if attachment.url.include?("s3.amazonaws")

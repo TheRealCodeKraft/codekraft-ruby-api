@@ -145,12 +145,17 @@ module Codekraft
 										end
 									end
 
-									cu = current_user
-									serializerKlass.singleton_class.class_eval do
-										define_method(:current_user) do
-											cu
-										end
-									end
+									#cu = current_user
+									#serializerKlass.singleton_class.class_eval do
+									#	define_method(:current_user) do
+									#		cu
+									#	end
+									#end
+									#serializerKlass.singleton_class.class_eval do
+									#	define_method(:current_route) do
+									#		endpoint[:route]
+									#	end
+									#end
 
 									if res[:service].respond_to?(:setCurrentUser)
 										res[:service].setCurrentUser current_user
