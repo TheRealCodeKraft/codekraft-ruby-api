@@ -15,11 +15,10 @@ module Codekraft
         helpers do
 
 					def default_serializer_options
-						Rails.logger.info "ROUTE PARAMS"
-						Rails.logger.info env['api.endpoint'].route.params
 						{ 
 							current_user: current_user,
-							current_route: env['api.endpoint'].route.path
+							current_route: env['api.endpoint'].route.path,
+							query_string: env['QUERY_STRING']
 						}
 					end
 

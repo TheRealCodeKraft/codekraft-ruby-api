@@ -43,6 +43,16 @@ module Codekraft
           end
         end
 
+        def query_string
+          if not instance_options.nil? and instance_options.has_key? :query_string
+            instance_options[:query_string]
+          elsif not scope.nil?
+            scope.query_string
+          else
+            nil
+          end
+        end
+
 				def attachment_url attachment
 					if Rails.env.production?
 						if attachment.url.include?("s3.amazonaws")
