@@ -2,7 +2,9 @@ module Codekraft
   module Api
     module Mailer
       class ForgotPasswordMailer < Base
-        def reset_password user
+        def reset_password user_id
+          user = User.find(user_id)
+
           stamp = SecureRandom.uuid
           user.stamp_salt = BCrypt::Engine.generate_salt
           user.stamp = Codekraft::Api::Service::User.new.encrypt_password(stamp, user.stamp_salt)
